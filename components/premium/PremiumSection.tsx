@@ -15,10 +15,10 @@ import LockIcon from "./LockIcon";
 const AD_LOAD_DELAY_MS = 2000;
 
 interface PremiumSectionProps {
-  premiumPreview?: string;
+  aiPreview?: string;
 }
 
-export default function PremiumSection({ premiumPreview }: PremiumSectionProps) {
+export default function PremiumSection({ aiPreview }: PremiumSectionProps) {
   const [adWatched, setAdWatched] = useState(false);
   const [isAdLoading, setIsAdLoading] = useState(false);
   const [showCompleteModal, setShowCompleteModal] = useState(false);
@@ -75,8 +75,8 @@ export default function PremiumSection({ premiumPreview }: PremiumSectionProps) 
               ✦
             </p>
             <p className="revenue-unlocked-message">{UNLOCKED_AI_MESSAGE}</p>
-            {premiumPreview ? (
-              <p className="revenue-unlocked-preview">{premiumPreview}</p>
+            {aiPreview ? (
+              <p className="revenue-unlocked-preview">{aiPreview}</p>
             ) : (
               <p className="revenue-unlocked-desc">
                 광고 시청으로 AI 심층 분석 1회가 열렸습니다.
@@ -89,8 +89,8 @@ export default function PremiumSection({ premiumPreview }: PremiumSectionProps) 
               <LockIcon className="h-5 w-5 text-[var(--saju-gold-light)]" />
               <p>심층 분석 리포트가 잠겨 있습니다</p>
             </div>
-            {premiumPreview && (
-              <p className="revenue-locked-preview">{premiumPreview}</p>
+            {aiPreview && (
+              <p className="revenue-locked-preview">{aiPreview}</p>
             )}
           </div>
         )}

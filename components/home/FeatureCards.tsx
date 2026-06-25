@@ -9,10 +9,11 @@ export interface HomeFeature {
 }
 
 const FEATURES: HomeFeature[] = [
-  { id: "saju", icon: "命", title: "사주", description: "AI 사주 분석", available: true },
+  { id: "saju", icon: "命", title: "사주", description: "사주팔자 분석", available: true },
   { id: "tarot", icon: "卜", title: "타로", description: "카드 운세", available: false },
   { id: "face", icon: "相", title: "관상", description: "얼굴 운명", available: false },
   { id: "palm", icon: "掌", title: "손금", description: "손바닥 운명", available: false },
+  { id: "mbti", icon: "性", title: "MBTI", description: "성향 분석", available: false },
   { id: "match", icon: "合", title: "궁합", description: "두 사람 운명", available: false },
 ];
 
@@ -24,9 +25,7 @@ export default function FeatureCards({ onSelectSaju }: FeatureCardsProps) {
   return (
     <div className="feature-grid">
       {FEATURES.map((feature) => {
-        const isSaju = feature.id === "saju";
-
-        if (isSaju && feature.available) {
+        if (feature.available) {
           return (
             <button
               key={feature.id}

@@ -4,12 +4,9 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { DEFAULT_BIRTH_TIME } from "@/lib/birth-time";
 import { getDefaultBirthDate } from "@/lib/saju";
+import { MBTI_TYPES } from "@/lib/fortune-api-types";
 import type { Gender } from "@/lib/types";
-import CustomerReviews from "@/components/home/CustomerReviews";
 import FeatureCards from "@/components/home/FeatureCards";
-import TrustStats from "@/components/home/TrustStats";
-import WhyUnmyeongLab from "@/components/home/WhyUnmyeongLab";
-import AskAIPanel from "@/components/ai/AskAIPanel";
 import BirthDatePicker from "./BirthDatePicker";
 import BirthTimePicker from "./BirthTimePicker";
 import LogoMark from "./LogoMark";
@@ -21,6 +18,7 @@ export default function SajuForm() {
   const [birthDate, setBirthDate] = useState(getDefaultBirthDate);
   const [birthTime, setBirthTime] = useState(DEFAULT_BIRTH_TIME);
   const [gender, setGender] = useState<Gender>("male");
+  const [mbti, setMbti] = useState("");
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -29,6 +27,9 @@ export default function SajuForm() {
       time: birthTime,
       gender,
     });
+    if (mbti) {
+      params.set("mbti", mbti);
+    }
     router.push(`/result?${params.toString()}`);
   }
 
@@ -41,28 +42,18 @@ export default function SajuForm() {
       <main className="animate-fade-in responsive-page home-page">
         {!showForm && (
           <>
-            <CustomerReviews />
-
             <header className="home-hero">
               <LogoMark />
-              <p className="home-brand-mark">UNMYEONG LAB</p>
               <h1 className="home-title">운명랩</h1>
-              <p className="home-slogan">AI가 읽어주는 당신의 운명</p>
 
               <button type="button" className="btn-hero" onClick={openForm}>
                 운명 분석 시작하기
               </button>
             </header>
 
-            <TrustStats />
-            <WhyUnmyeongLab />
-
             <section className="home-features" aria-label="분석 서비스">
-              <h2 className="trust-section-title home-features-title">분석 서비스</h2>
               <FeatureCards onSelectSaju={openForm} />
             </section>
-
-            <AskAIPanel className="home-ask-ai" />
           </>
         )}
 
@@ -116,6 +107,22 @@ export default function SajuForm() {
                     </label>
                   ))}
                 </div>
+              </div>
+
+              <div className="mb-7">
+                <span className="field-label">MBTI (선택)</span>
+                <select
+                  value={mbti}
+                  onChange={(e) => setMbti(e.target.value)}
+                  className="lux-input w-full"
+                >
+                  <option value="">선택 안 함</option>
+                  {MBTI_TYPES.map((type) => (
+                    <option key={type} value={type}>
+                      {type}
+                    </option>
+                  ))}
+                </select>
               </div>
 
               <button type="submit" className="btn-primary">

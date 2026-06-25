@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "@next/third-parties": "^16.2.9",
+    "@tosspayments/tosspayments-sdk": "^2.7.1",
+    "lunar-typescript": "^1.8.6",
     "next": "^15.1.0",
     "openai": "^6.45.0",
     "react": "^19.0.0",

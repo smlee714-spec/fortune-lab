@@ -42,7 +42,7 @@ export default function AdCompleteModal({ open, onClose }: AdCompleteModalProps)
           광고 시청이 완료되었습니다
         </h2>
         <p className="premium-modal-desc">
-          AI 심층 분석 1회 이용이 가능합니다.
+          AI 질문 5회와 심층 분석 1회가 열렸습니다.
         </p>
         <button type="button" className="btn-primary mt-6" onClick={onClose}>
           확인

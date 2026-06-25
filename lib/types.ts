@@ -14,6 +14,8 @@ export interface DayMasterInfo {
   desc: string;
 }
 
+import type { SajuEngineResult } from "./saju-engine";
+
 export interface SajuResult {
   year: Pillar;
   month: Pillar;
@@ -29,6 +31,8 @@ export interface SajuResult {
     hour: number;
     gender: Gender;
   };
+  /** lunar-typescript 명리 엔진 계산 결과 */
+  engine: SajuEngineResult;
 }
 
 export interface SajuInput {

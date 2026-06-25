@@ -39,15 +39,24 @@ export function mapGptFortuneToDaily(
 export async function fetchGptFortune(
   request: FortuneApiRequest
 ): Promise<GptFortuneResponse> {
-  const response = await fetch("/api/fortune", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(request),
-  });
+  console.log("AI request start");
+
+  let response: Response;
+  try {
+    response = await fetch("/api/fortune", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(request),
+    });
+  } catch {
+    console.log("AI request failed");
+    throw new Error("운세를 불러오는 중 네트워크 오류가 발생했습니다.");
+  }
 
   const payload = (await response.json()) as GptFortuneResponse | { error?: string };
 
   if (!response.ok) {
+    console.log("AI request failed");
     const message =
       typeof payload === "object" && payload && "error" in payload && payload.error
         ? payload.error
@@ -55,5 +64,6 @@ export async function fetchGptFortune(
     throw new Error(message);
   }
 
+  console.log("AI request success");
   return payload as GptFortuneResponse;
 }

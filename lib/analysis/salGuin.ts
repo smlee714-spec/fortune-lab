@@ -33,7 +33,6 @@ function buildItem(
 /** 살/귀인 감지 — 샘플 규칙 (추후 정밀 로직 교체 가능) */
 export function analyzeSalGuin(result: SajuResult): SalGuinAnalysis {
   const branches = getBranchSet(result);
-  const dayBranch = result.day.branch;
   const dayStem = result.day.stem;
   const monthBranch = result.month.branch;
 

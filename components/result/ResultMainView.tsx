@@ -2,44 +2,36 @@
 
 import Link from "next/link";
 import { useSajuResult } from "@/hooks/useSajuResult";
-import { ANALYSIS_MENUS } from "@/lib/result-routes";
 import { formatBirthInfo } from "@/lib/saju";
-import PremiumSection from "@/components/premium/PremiumSection";
-import AskAIPanel from "@/components/ai/AskAIPanel";
+import ResultUpgradeCards from "@/components/premium/ResultUpgradeCards";
+import ResultAskAIPanel from "./ResultAskAIPanel";
 import MobileShell from "@/components/MobileShell";
-import AnalysisMenuCard from "./AnalysisMenuCard";
 import DestinyScoreGauge from "./DestinyScoreGauge";
-import FortuneEmojiCard from "./FortuneEmojiCard";
 import ResultFeedback from "./ResultFeedback";
-import ResultFortuneError from "./ResultFortuneError";
-import ResultFortuneLoading from "./ResultFortuneLoading";
 import ResultLoading from "./ResultLoading";
+import ResultModePanel from "./ResultModePanel";
 import ShareButtons from "./ShareButtons";
 import TodayLuckPanel from "./TodayLuckPanel";
-
-const FORTUNE_CARDS = [
-  { key: "love" as const, emoji: "❤️", title: "연애운" },
-  { key: "wealth" as const, emoji: "💰", title: "재물운" },
-  { key: "career" as const, emoji: "💼", title: "직업운" },
-  { key: "health" as const, emoji: "🏥", title: "건강운" },
-];
 
 export default function ResultMainView() {
   const {
     params,
     fortune,
     luckMeta,
-    premiumPreview,
+    questionAnswer,
+    activeQuestion,
     result,
+    analysis,
     isReady,
-    fortuneLoading,
-    fortuneError,
-    refetchFortune,
+    questionLoading,
+    askQuestion,
   } = useSajuResult();
 
-  if (!isReady || !params || !result) {
+  if (!isReady || !params || !result || !analysis) {
     return <ResultLoading />;
   }
+
+  const hasAiResult = Boolean(fortune && luckMeta);
 
   const dateLabel =
     fortune?.dateLabel ??
@@ -64,69 +56,42 @@ export default function ResultMainView() {
           <p className="result-date-label">{dateLabel}</p>
         </header>
 
-        {fortuneLoading && <ResultFortuneLoading />}
+        <ResultAskAIPanel
+          className="result-ask-ai"
+          fortuneParams={params}
+          onAskQuestion={askQuestion}
+          questionLoading={questionLoading}
+          initialAnswer={questionAnswer}
+          initialQuestion={activeQuestion}
+        />
 
-        {!fortuneLoading && fortuneError && (
-          <ResultFortuneError message={fortuneError} onRetry={refetchFortune} />
-        )}
-
-        {!fortuneLoading && !fortuneError && fortune && luckMeta && (
-          <>
+        {hasAiResult && (
+          <div className="result-ai-output animate-fade-in">
             <section className="result-hero-panel">
-              <DestinyScoreGauge score={luckMeta.destinyScore} starCount={luckMeta.starCount} />
+              <DestinyScoreGauge score={luckMeta!.destinyScore} starCount={luckMeta!.starCount} />
 
               <div className="result-oneliner">
                 <p className="section-title-sm">오늘의 한줄</p>
-                <p className="result-oneliner-text">{luckMeta.oneLiner}</p>
+                <p className="result-oneliner-text">{luckMeta!.oneLiner}</p>
               </div>
             </section>
 
-            <TodayLuckPanel luck={luckMeta} />
+            <TodayLuckPanel luck={luckMeta!} />
 
-            <section className="result-free-section" aria-labelledby="free-fortune-title">
-              <div className="section-heading-row">
-                <span className="free-badge">FREE</span>
-                <h2 id="free-fortune-title" className="section-title-md">
-                  무료 결과
-                </h2>
-              </div>
-
-              <div className="fortune-emoji-grid">
-                {FORTUNE_CARDS.map(({ key, emoji, title }) => (
-                  <FortuneEmojiCard
-                    key={key}
-                    emoji={emoji}
-                    title={title}
-                    content={fortune[key].detail}
-                  />
-                ))}
-              </div>
-            </section>
-          </>
+            <ResultModePanel
+              params={params}
+              result={result}
+              analysis={analysis}
+              fortune={fortune}
+              luckMeta={luckMeta}
+              questionAnswer={questionAnswer}
+            />
+          </div>
         )}
 
-        <AskAIPanel className="result-ask-ai" />
-
         <div className="lux-divider" />
 
-        <section className="result-analysis-section">
-          <div className="section-heading-center">
-            <p className="lux-caption">DEEP ANALYSIS</p>
-            <h2 className="section-title-md mt-3">분석 메뉴</h2>
-          </div>
-
-          <div className="menu-grid">
-            {ANALYSIS_MENUS.map((item) => (
-              <AnalysisMenuCard key={item.section} item={item} params={params} />
-            ))}
-          </div>
-        </section>
-
-        <div className="lux-divider" />
-
-        <div className="result-premium-wrap">
-          <PremiumSection premiumPreview={premiumPreview ?? undefined} />
-        </div>
+        <ResultUpgradeCards />
 
         <div className="result-bottom-trust">
           <ResultFeedback />
