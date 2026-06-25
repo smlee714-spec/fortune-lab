@@ -14,7 +14,11 @@ import LockIcon from "./LockIcon";
 
 const AD_LOAD_DELAY_MS = 2000;
 
-export default function PremiumSection() {
+interface PremiumSectionProps {
+  premiumPreview?: string;
+}
+
+export default function PremiumSection({ premiumPreview }: PremiumSectionProps) {
   const [adWatched, setAdWatched] = useState(false);
   const [isAdLoading, setIsAdLoading] = useState(false);
   const [showCompleteModal, setShowCompleteModal] = useState(false);
@@ -58,14 +62,10 @@ export default function PremiumSection() {
 
   return (
     <>
-      <section className="revenue-section" aria-labelledby="revenue-section-title">
-        <div className="mb-6 text-center">
-          <p className="lux-caption">UNLOCK</p>
-          <h2
-            id="revenue-section-title"
-            className="mt-3 font-serif text-lg font-light tracking-wide md:text-xl"
-          >
-            AI 심층 분석
+      <section className="revenue-section premium-v2" aria-labelledby="revenue-section-title">
+        <div className="premium-v2-header">
+          <h2 id="revenue-section-title" className="premium-v2-title">
+            🔒 {LOCKED_AI_MESSAGE}
           </h2>
         </div>
 
@@ -75,20 +75,34 @@ export default function PremiumSection() {
               ✦
             </p>
             <p className="revenue-unlocked-message">{UNLOCKED_AI_MESSAGE}</p>
-            <p className="revenue-unlocked-desc">
-              광고 시청으로 AI 심층 분석 1회가 열렸습니다.
-              <br />
-              곧 더 깊은 분석 기능을 만나보실 수 있습니다.
-            </p>
+            {premiumPreview ? (
+              <p className="revenue-unlocked-preview">{premiumPreview}</p>
+            ) : (
+              <p className="revenue-unlocked-desc">
+                광고 시청으로 AI 심층 분석 1회가 열렸습니다.
+              </p>
+            )}
           </div>
         ) : (
-          <div className="revenue-locked-panel">
-            <div className="revenue-lock-icon" aria-hidden>
+          <div className="premium-lock-card">
+            <div className="premium-lock-card-inner">
               <LockIcon className="h-5 w-5 text-[var(--saju-gold-light)]" />
+              <p>심층 분석 리포트가 잠겨 있습니다</p>
             </div>
-            <p className="revenue-locked-message">{LOCKED_AI_MESSAGE}</p>
+            {premiumPreview && (
+              <p className="revenue-locked-preview">{premiumPreview}</p>
+            )}
           </div>
         )}
+
+        <div className="revenue-benefits premium-v2-benefits">
+          <p className="revenue-benefits-title">혜택</p>
+          <ul className="revenue-benefits-list">
+            {PREMIUM_BENEFITS.map((benefit) => (
+              <li key={benefit}>{benefit}</li>
+            ))}
+          </ul>
+        </div>
 
         {!adWatched && (
           <div className="revenue-actions">
@@ -96,7 +110,7 @@ export default function PremiumSection() {
               type="button"
               className="btn-revenue-ad"
               onClick={handleWatchAd}
-              disabled={isAdLoading || adWatched}
+              disabled={isAdLoading}
               aria-busy={isAdLoading}
             >
               <span className="btn-revenue-icon" aria-hidden>
@@ -117,7 +131,7 @@ export default function PremiumSection() {
                 ⭐
               </span>
               <span className="btn-revenue-text">
-                <span className="btn-revenue-label">운명랩 Premium</span>
+                <span className="btn-revenue-label">Premium 시작하기</span>
                 <span className="btn-revenue-price">{PREMIUM_PRICE}</span>
               </span>
             </Link>
@@ -131,21 +145,12 @@ export default function PremiumSection() {
                 ⭐
               </span>
               <span className="btn-revenue-text">
-                <span className="btn-revenue-label">운명랩 Premium</span>
+                <span className="btn-revenue-label">Premium 시작하기</span>
                 <span className="btn-revenue-price">{PREMIUM_PRICE}</span>
               </span>
             </Link>
           </div>
         )}
-
-        <div className="revenue-benefits">
-          <p className="revenue-benefits-title">Premium 혜택</p>
-          <ul className="revenue-benefits-list">
-            {PREMIUM_BENEFITS.map((benefit) => (
-              <li key={benefit}>{benefit}</li>
-            ))}
-          </ul>
-        </div>
       </section>
 
       <AdCompleteModal

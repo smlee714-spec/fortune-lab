@@ -98,7 +98,7 @@ export const ANALYSIS_MENUS: AnalysisMenuItem[] = [
   },
   {
     section: "yearluck",
-    title: "올해의 운세",
+    title: "올해 운세",
     description: "올해·내년·후년, 3년간의 흐름",
     hook: "올해는 어떤 해가 될까요?",
     icon: "歲",

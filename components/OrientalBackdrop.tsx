@@ -1,22 +1,52 @@
-/** 화면 배경 장식 — 은은한 동양풍 요소 (명품 브랜드 톤) */
+/** 화면 배경 장식 — 은은한 동양풍 + 별빛 */
 export default function OrientalBackdrop() {
+  const stars = [
+    [12, 8, 1.2, 0.35],
+    [28, 14, 0.8, 0.25],
+    [45, 6, 1, 0.3],
+    [62, 18, 0.7, 0.2],
+    [78, 10, 1.1, 0.28],
+    [88, 24, 0.6, 0.22],
+    [18, 32, 0.9, 0.18],
+    [55, 28, 0.8, 0.24],
+    [72, 36, 1, 0.2],
+    [35, 42, 0.7, 0.16],
+    [8, 55, 0.8, 0.14],
+    [92, 48, 0.9, 0.18],
+  ] as const;
+
   return (
     <div className="oriental-backdrop pointer-events-none fixed inset-x-0 top-0 z-0 mx-auto h-full">
-      {/* 한지 + 먹물 번짐 */}
       <div className="app-shell-bg bg-hanji absolute inset-x-0 top-0 mx-auto h-full" />
       <div className="app-shell-bg bg-ink-wash absolute inset-x-0 top-0 mx-auto h-full" />
 
-      {/* 구름 */}
+      {/* 은은한 별빛 */}
+      <svg
+        className="app-shell-bg absolute inset-x-0 top-0 mx-auto h-full w-full"
+        viewBox="0 0 100 100"
+        preserveAspectRatio="xMidYMid slice"
+        aria-hidden
+      >
+        {stars.map(([cx, cy, r, opacity], i) => (
+          <circle
+            key={i}
+            cx={cx}
+            cy={cy}
+            r={r}
+            fill="#e8c872"
+            opacity={opacity}
+            style={{ animation: `starTwinkle ${2.5 + (i % 3)}s ease-in-out ${i * 0.3}s infinite` }}
+          />
+        ))}
+      </svg>
+
       <svg
         className="app-shell-bg absolute inset-x-0 top-0 mx-auto h-48 w-full text-saju-gold opacity-[0.035]"
         viewBox="0 0 400 120"
         preserveAspectRatio="xMidYMid slice"
         aria-hidden
       >
-        <path
-          fill="currentColor"
-          d="M0 80 Q60 40 120 70 T240 60 T400 75 V120 H0 Z"
-        />
+        <path fill="currentColor" d="M0 80 Q60 40 120 70 T240 60 T400 75 V120 H0 Z" />
         <path
           fill="currentColor"
           opacity="0.6"
@@ -24,9 +54,8 @@ export default function OrientalBackdrop() {
         />
       </svg>
 
-      {/* 북두칠성 */}
       <svg
-        className="absolute right-[8%] top-[6%] h-28 w-28 opacity-[0.14] md:right-[12%]"
+        className="absolute right-[8%] top-[6%] h-28 w-28 opacity-[0.16] md:right-[12%]"
         viewBox="0 0 100 100"
         aria-hidden
       >
@@ -53,9 +82,8 @@ export default function OrientalBackdrop() {
         ))}
       </svg>
 
-      {/* 작은 별자리 */}
       <svg
-        className="absolute left-[10%] top-[22%] h-16 w-16 opacity-[0.08]"
+        className="absolute left-[10%] top-[22%] h-16 w-16 opacity-[0.1]"
         viewBox="0 0 60 60"
         aria-hidden
       >
@@ -63,34 +91,12 @@ export default function OrientalBackdrop() {
         <circle cx="28" cy="8" r="0.8" fill="#d4a853" />
         <circle cx="45" cy="20" r="1.2" fill="#e8c872" />
         <circle cx="35" cy="35" r="0.7" fill="#d4a853" />
-        <path d="M10 15 L28 8 L45 20 L35 35" stroke="#d4a853" strokeWidth="0.4" fill="none" opacity="0.4" />
-      </svg>
-
-      {/* 음양 — 좌하단 포인트 */}
-      <svg
-        className="absolute bottom-[18%] left-[6%] h-8 w-8 opacity-[0.07]"
-        viewBox="0 0 32 32"
-        aria-hidden
-      >
-        <circle cx="16" cy="16" r="15" fill="none" stroke="#d4a853" strokeWidth="0.5" />
         <path
-          d="M16 1 A15 15 0 0 1 16 31 A7.5 7.5 0 0 0 16 16 A7.5 7.5 0 0 1 16 1Z"
-          fill="#d4a853"
-        />
-        <circle cx="16" cy="8.5" r="1.2" fill="#0c0c16" />
-        <circle cx="16" cy="23.5" r="1.2" fill="#d4a853" />
-      </svg>
-
-      {/* 음양 — 우상단 포인트 */}
-      <svg
-        className="absolute right-[7%] top-[38%] h-5 w-5 opacity-[0.05]"
-        viewBox="0 0 32 32"
-        aria-hidden
-      >
-        <circle cx="16" cy="16" r="15" fill="none" stroke="#d4a853" strokeWidth="0.5" />
-        <path
-          d="M16 1 A15 15 0 0 1 16 31 A7.5 7.5 0 0 0 16 16 A7.5 7.5 0 0 1 16 1Z"
-          fill="#d4a853"
+          d="M10 15 L28 8 L45 20 L35 35"
+          stroke="#d4a853"
+          strokeWidth="0.4"
+          fill="none"
+          opacity="0.4"
         />
       </svg>
     </div>

@@ -5,75 +5,114 @@ import { useSajuResult } from "@/hooks/useSajuResult";
 import { ANALYSIS_MENUS } from "@/lib/result-routes";
 import { formatBirthInfo } from "@/lib/saju";
 import PremiumSection from "@/components/premium/PremiumSection";
-import FortuneSummaryCard from "@/components/FortuneSummaryCard";
+import AskAIPanel from "@/components/ai/AskAIPanel";
 import MobileShell from "@/components/MobileShell";
 import AnalysisMenuCard from "./AnalysisMenuCard";
+import DestinyScoreGauge from "./DestinyScoreGauge";
+import FortuneEmojiCard from "./FortuneEmojiCard";
+import ResultFeedback from "./ResultFeedback";
+import ResultFortuneError from "./ResultFortuneError";
+import ResultFortuneLoading from "./ResultFortuneLoading";
 import ResultLoading from "./ResultLoading";
+import ShareButtons from "./ShareButtons";
+import TodayLuckPanel from "./TodayLuckPanel";
+
+const FORTUNE_CARDS = [
+  { key: "love" as const, emoji: "❤️", title: "연애운" },
+  { key: "wealth" as const, emoji: "💰", title: "재물운" },
+  { key: "career" as const, emoji: "💼", title: "직업운" },
+  { key: "health" as const, emoji: "🏥", title: "건강운" },
+];
 
 export default function ResultMainView() {
-  const { params, fortune, result, isReady } = useSajuResult();
+  const {
+    params,
+    fortune,
+    luckMeta,
+    premiumPreview,
+    result,
+    isReady,
+    fortuneLoading,
+    fortuneError,
+    refetchFortune,
+  } = useSajuResult();
 
-  if (!isReady || !params || !fortune || !result) {
+  if (!isReady || !params || !result) {
     return <ResultLoading />;
   }
 
+  const dateLabel =
+    fortune?.dateLabel ??
+    new Date().toLocaleDateString("ko-KR", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      weekday: "long",
+    });
+
   return (
     <MobileShell>
-      <main className="animate-fade-in responsive-page">
-        <header className="relative mb-10 pt-1 text-center md:mb-12">
-          <Link href="/" className="lux-btn-ghost absolute left-0 top-1 text-xs sm:text-sm">
+      <main className="animate-fade-in responsive-page result-page">
+        <header className="result-header">
+          <Link href="/" className="lux-btn-ghost result-back">
             <span aria-hidden>←</span>
-            <span>다시 입력하기</span>
+            <span>홈</span>
           </Link>
 
-          <p className="lux-caption">UNMYEONG LAB</p>
-          <h1 className="mt-3 font-serif text-2xl font-light tracking-[0.14em] md:text-3xl">
-            운명랩
-          </h1>
-          <p className="mt-2 text-sm font-light tracking-wide text-[var(--saju-gold-light)]">
-            오늘의 운세
-          </p>
-          <p className="mt-3 text-sm font-light text-[var(--saju-cream-dim)] md:text-base">
-            {formatBirthInfo(result.birthInfo)}
-          </p>
-          <p className="mt-1 text-xs text-[var(--saju-cream-dim)] opacity-60">
-            {fortune.dateLabel}
-          </p>
+          <p className="result-complete-badge">✨ 운명 분석 완료</p>
+          <p className="result-birth-info">{formatBirthInfo(result.birthInfo)}</p>
+          <p className="result-date-label">{dateLabel}</p>
         </header>
 
-        {/* 무료 영역 */}
-        <section className="mb-10 md:mb-12" aria-labelledby="free-section-title">
-          <div className="mb-5 flex items-center gap-3">
-            <span className="free-badge">FREE</span>
-            <h2 id="free-section-title" className="font-serif text-base font-light tracking-wide">
-              오늘의 운세
-            </h2>
-          </div>
+        {fortuneLoading && <ResultFortuneLoading />}
 
-          <div className="fortune-grid">
-            <div className="grid-span-full">
-              <FortuneSummaryCard
-                item={fortune.overall}
-                displayTitle="오늘의 총평"
-                featured
-              />
-            </div>
-            <FortuneSummaryCard item={fortune.love} />
-            <FortuneSummaryCard item={fortune.wealth} />
-            <FortuneSummaryCard item={fortune.career} />
-            <FortuneSummaryCard item={fortune.health} />
-          </div>
-        </section>
+        {!fortuneLoading && fortuneError && (
+          <ResultFortuneError message={fortuneError} onRetry={refetchFortune} />
+        )}
+
+        {!fortuneLoading && !fortuneError && fortune && luckMeta && (
+          <>
+            <section className="result-hero-panel">
+              <DestinyScoreGauge score={luckMeta.destinyScore} starCount={luckMeta.starCount} />
+
+              <div className="result-oneliner">
+                <p className="section-title-sm">오늘의 한줄</p>
+                <p className="result-oneliner-text">{luckMeta.oneLiner}</p>
+              </div>
+            </section>
+
+            <TodayLuckPanel luck={luckMeta} />
+
+            <section className="result-free-section" aria-labelledby="free-fortune-title">
+              <div className="section-heading-row">
+                <span className="free-badge">FREE</span>
+                <h2 id="free-fortune-title" className="section-title-md">
+                  무료 결과
+                </h2>
+              </div>
+
+              <div className="fortune-emoji-grid">
+                {FORTUNE_CARDS.map(({ key, emoji, title }) => (
+                  <FortuneEmojiCard
+                    key={key}
+                    emoji={emoji}
+                    title={title}
+                    content={fortune[key].detail}
+                  />
+                ))}
+              </div>
+            </section>
+          </>
+        )}
+
+        <AskAIPanel className="result-ask-ai" />
 
         <div className="lux-divider" />
 
-        {/* 기본 사주 분석 (무료) */}
-        <section className="pt-8">
-          <div className="mb-6 text-center md:mb-8">
-            <p className="lux-caption">ANALYSIS</p>
-            <h2 className="mt-3 font-serif text-lg font-light tracking-wide md:text-xl">
-              더 알아보기
-            </h2>
+        <section className="result-analysis-section">
+          <div className="section-heading-center">
+            <p className="lux-caption">DEEP ANALYSIS</p>
+            <h2 className="section-title-md mt-3">분석 메뉴</h2>
           </div>
 
           <div className="menu-grid">
@@ -85,9 +124,13 @@ export default function ResultMainView() {
 
         <div className="lux-divider" />
 
-        {/* 수익 구조 — 프리미엄 영역 */}
-        <div className="pb-6 pt-8">
-          <PremiumSection />
+        <div className="result-premium-wrap">
+          <PremiumSection premiumPreview={premiumPreview ?? undefined} />
+        </div>
+
+        <div className="result-bottom-trust">
+          <ResultFeedback />
+          <ShareButtons />
         </div>
       </main>
     </MobileShell>

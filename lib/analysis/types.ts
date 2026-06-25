@@ -156,9 +156,8 @@ export const SIPSUNG_MEANINGS: Record<SipsungName, string> = {
 };
 
 export const AI_SAMPLE_QUESTIONS = [
-  "올해 사업해도 될까요?",
-  "이직해도 될까요?",
+  "올해 창업해도 될까요?",
   "연애운은 어떤가요?",
-  "돈은 언제 좋아지나요?",
-  "창업운이 있나요?",
+  "돈은 언제 좋아질까요?",
+  "이직해도 될까요?",
 ] as const;

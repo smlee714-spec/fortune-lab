@@ -1,5 +1,7 @@
 import type { Metadata, Viewport } from "next";
+import { GoogleAnalytics } from "@next/third-parties/google";
 import { Noto_Sans_KR, Noto_Serif_KR } from "next/font/google";
+import { GA_MEASUREMENT_ID, isGoogleAnalyticsEnabled } from "@/lib/analytics";
 import "./globals.css";
 
 const notoSans = Noto_Sans_KR({
@@ -15,8 +17,8 @@ const notoSerif = Noto_Serif_KR({
 });
 
 export const metadata: Metadata = {
-  title: "운명랩 | AI 사주 운세",
-  description: "운명랩에서 생년월일과 태어난 시간으로 나만의 사주와 운세를 확인하세요",
+  title: "운명랩 | AI가 읽어주는 당신의 운명",
+  description: "운명랩에서 AI가 사주, 운세, 운명을 분석해 드립니다",
 };
 
 export const viewport: Viewport = {
@@ -37,6 +39,7 @@ export default function RootLayout({
         className={`${notoSans.variable} ${notoSerif.variable} font-sans antialiased`}
       >
         {children}
+        {isGoogleAnalyticsEnabled && <GoogleAnalytics gaId={GA_MEASUREMENT_ID} />}
       </body>
     </html>
   );

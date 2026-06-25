@@ -16,6 +16,7 @@ export default function PremiumIntroView() {
           <h1 className="mt-3 font-serif text-2xl font-light tracking-[0.12em] md:text-3xl">
             운명랩 Premium
           </h1>
+          <p className="mt-2 text-sm text-[var(--saju-gold-light)]">AI가 읽어주는 당신의 운명</p>
           <p className="mt-4 font-serif text-2xl font-medium text-[var(--saju-gold-light)] md:text-3xl">
             {PREMIUM_PRICE}
           </p>

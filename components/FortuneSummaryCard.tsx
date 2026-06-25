@@ -14,12 +14,14 @@ interface FortuneSummaryCardProps {
   item: FortuneItem;
   displayTitle?: string;
   featured?: boolean;
+  showLevel?: boolean;
 }
 
 export default function FortuneSummaryCard({
   item,
   displayTitle,
   featured = false,
+  showLevel = true,
 }: FortuneSummaryCardProps) {
   const title = displayTitle ?? item.title;
   const icon = ICONS[title] ?? ICONS[item.title] ?? "◈";
@@ -35,9 +37,11 @@ export default function FortuneSummaryCard({
             <h3 className="font-serif text-sm font-medium tracking-wide text-saju-cream">
               {title}
             </h3>
-            <span className="shrink-0 text-[0.62rem] tracking-wider text-saju-gold/60">
-              {FORTUNE_LEVEL_LABELS[item.level]}
-            </span>
+            {showLevel && (
+              <span className="shrink-0 text-[0.62rem] tracking-wider text-saju-gold/60">
+                {FORTUNE_LEVEL_LABELS[item.level]}
+              </span>
+            )}
           </div>
           <p className="mt-2 text-xs leading-[1.85] text-saju-cream-dim/80">{item.detail}</p>
         </div>

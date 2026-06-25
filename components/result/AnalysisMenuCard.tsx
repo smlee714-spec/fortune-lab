@@ -12,13 +12,10 @@ export default function AnalysisMenuCard({ item, params }: AnalysisMenuCardProps
   const href = buildResultPath(`/result/${item.section}`, params);
 
   return (
-    <Link href={href} className="menu-card group relative z-[1]">
-      <span className="lux-chip relative z-[1] mb-3 h-10 w-10 text-base transition-colors duration-lux group-hover:border-saju-gold/35">
-        {item.icon}
-      </span>
-      <h3 className="relative z-[1] text-center font-serif text-[0.78rem] font-medium leading-snug tracking-wide text-saju-cream transition-colors duration-lux group-hover:text-saju-gold-light sm:text-sm">
-        {item.title}
-      </h3>
+    <Link href={href} className="menu-card menu-card-lift group">
+      <span className="menu-card-icon">{item.icon}</span>
+      <h3 className="menu-card-title">{item.title}</h3>
+      <p className="menu-card-desc">{item.description}</p>
     </Link>
   );
 }
