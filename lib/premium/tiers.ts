@@ -19,7 +19,7 @@ export const SERVICE_TIERS: readonly TierDefinition[] = [
   },
   {
     id: "deep_analysis",
-    name: "심층 분석",
+    name: "AI 심층 분석",
     priceLabel: "990원",
     headline: "한 번만 결제하면",
     benefits: ["대운", "세운", "월운", "용신", "신살", "AI 종합 분석"],

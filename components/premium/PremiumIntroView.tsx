@@ -1,5 +1,6 @@
 import Link from "next/link";
 import MobileShell from "@/components/MobileShell";
+import DeepAnalysisCheckout from "./DeepAnalysisCheckout";
 import PremiumTierList from "./PremiumTierList";
 
 export default function PremiumIntroView() {
@@ -12,24 +13,33 @@ export default function PremiumIntroView() {
             <span>돌아가기</span>
           </Link>
 
-          <p className="lux-caption">PLANS</p>
+          <p className="lux-caption">PAYMENT</p>
           <h1 className="mt-3 font-serif text-2xl font-light tracking-[0.12em] md:text-3xl">
-            나에게 맞는 플랜
+            AI 심층 분석
           </h1>
           <p className="mt-3 text-sm font-light leading-relaxed text-[var(--saju-cream-dim)]">
-            무료로 시작하고, 필요할 때만 업그레이드하세요.
+            990원 1회 결제로 대운·세운·용신·신살 AI 분석을 열 수 있습니다.
             <br />
-            첫 결제 부담을 줄인 단계별 구성입니다.
+            토스페이먼츠 테스트 키로 결제를 시뮬레이션할 수 있습니다.
           </p>
         </header>
+
+        <DeepAnalysisCheckout />
+
+        <div className="premium-section-divider" aria-hidden />
+
+        <p className="lux-caption text-center">ALL PLANS</p>
+        <h2 className="mt-2 text-center font-serif text-lg font-light tracking-wide">
+          전체 플랜 비교
+        </h2>
 
         <PremiumTierList />
 
         <div className="premium-intro-note">
           <p>
-            심층 분석(990원)은 1회 결제로 영구 이용합니다.
+            AI 심층 분석(990원)은 1회 결제로 영구 이용합니다.
             <br />
-            Premium은 월 구독이며, 토스페이먼츠 테스트 키로 결제를 시뮬레이션할 수 있습니다.
+            Client Key는 브라우저에서만, Secret Key는 서버 API에서만 사용됩니다.
           </p>
         </div>
       </main>

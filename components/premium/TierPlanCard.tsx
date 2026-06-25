@@ -78,7 +78,7 @@ export default function TierPlanCard({ tier, entitlements }: TierPlanCardProps) 
         )}
 
         {tier.id === "deep_analysis" && !isOwned && tier.planId && (
-          <PremiumPaymentButton planId={tier.planId}>⭐ 심층 분석 990원</PremiumPaymentButton>
+          <PremiumPaymentButton planId={tier.planId}>⭐ AI 심층 분석 990원</PremiumPaymentButton>
         )}
 
         {tier.id === "premium" && isOwned && (

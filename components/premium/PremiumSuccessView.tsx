@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import MobileShell from "@/components/MobileShell";
+import { PAYMENT_FAIL_PATH } from "@/lib/payments/urls";
 import { getPremiumPlan } from "@/lib/premium/plans";
 import type { ConfirmPaymentResponse } from "@/lib/premium/types";
 
@@ -60,7 +61,7 @@ export default function PremiumSuccessView() {
             `${plan.priceLabel} 구독이 시작되었습니다. AI 질문 무제한·광고 제거·모든 분석을 이용하세요.`,
           );
         } else {
-          setSuccessTitle("심층 분석이 열렸습니다");
+          setSuccessTitle("AI 심층 분석이 열렸습니다");
           setSuccessMessage(
             `${plan.priceLabel} 결제가 완료되었습니다. 대운·세운·용신·신살 AI 종합 분석을 확인하세요.`,
           );
@@ -119,7 +120,7 @@ export default function PremiumSuccessView() {
             <p className="mt-3 text-sm leading-relaxed text-[var(--saju-cream-dim)]">
               {errorMessage}
             </p>
-            <Link href="/premium/fail" className="btn-primary mt-8 block text-center">
+            <Link href={PAYMENT_FAIL_PATH} className="btn-primary mt-8 block text-center">
               실패 안내 보기
             </Link>
           </div>

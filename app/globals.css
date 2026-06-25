@@ -765,6 +765,14 @@
     color: var(--saju-cream);
   }
 
+  .result-today-detail {
+    margin-top: 0.75rem;
+    font-size: 0.82rem;
+    font-weight: 300;
+    line-height: 1.8;
+    color: var(--saju-cream-dim);
+  }
+
   .section-title-sm {
     font-size: 0.68rem;
     font-weight: 500;
@@ -2719,4 +2727,101 @@ a.upgrade-card:hover {
   text-align: center;
   font-size: 0.8rem;
   color: var(--saju-cream-dim);
+}
+
+.deep-analysis-checkout {
+  position: relative;
+  margin-bottom: 1.5rem;
+  border-radius: 18px;
+  border: 1px solid var(--gold-25);
+  background: linear-gradient(165deg, var(--ink-50) 0%, rgba(201, 162, 39, 0.06) 100%);
+  padding: 1.5rem 1.25rem 1.35rem;
+  box-shadow: var(--shadow-lux);
+}
+
+.deep-analysis-checkout-badge {
+  display: inline-block;
+  border-radius: 999px;
+  border: 1px solid var(--gold-20);
+  background: var(--gold-08);
+  padding: 0.2rem 0.65rem;
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  color: var(--saju-gold-light);
+}
+
+.deep-analysis-checkout-title {
+  margin-top: 0.75rem;
+  font-family: var(--font-noto-serif), serif;
+  font-size: 1.35rem;
+  font-weight: 500;
+  color: var(--saju-cream);
+}
+
+.deep-analysis-checkout-price {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.deep-analysis-checkout-amount {
+  font-family: var(--font-noto-serif), serif;
+  font-size: 1.75rem;
+  font-weight: 500;
+  color: var(--saju-gold-light);
+}
+
+.deep-analysis-checkout-note {
+  font-size: 0.78rem;
+  color: var(--saju-cream-dim);
+}
+
+.deep-analysis-checkout-desc {
+  margin-top: 0.75rem;
+  font-size: 0.82rem;
+  line-height: 1.7;
+  color: var(--saju-cream-dim);
+}
+
+.deep-analysis-checkout-benefits {
+  margin: 1rem 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.45rem 0.75rem;
+}
+
+.deep-analysis-checkout-benefits li {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.78rem;
+  color: var(--saju-cream);
+}
+
+.deep-analysis-checkout-benefits li span:first-child {
+  color: var(--saju-gold-light);
+  font-size: 0.65rem;
+}
+
+.deep-analysis-checkout-action {
+  margin-top: 1.15rem;
+}
+
+.deep-analysis-checkout-owned {
+  border-radius: 10px;
+  border: 1px solid var(--gold-20);
+  background: var(--gold-06);
+  padding: 0.85rem 1rem;
+  text-align: center;
+  font-size: 0.82rem;
+  color: var(--saju-gold-light);
+}
+
+.premium-section-divider {
+  height: 1px;
+  margin: 1.75rem 0 1.5rem;
+  background: linear-gradient(90deg, transparent, var(--gold-20), transparent);
 }

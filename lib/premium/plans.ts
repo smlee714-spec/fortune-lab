@@ -3,14 +3,14 @@ import type { PremiumPlan, PremiumPlanId } from "./types";
 export const PAYMENT_PLANS: Record<PremiumPlanId, PremiumPlan> = {
   deep_analysis: {
     id: "deep_analysis",
-    name: "심층 분석",
+    name: "AI 심층 분석",
     description: "대운·세운·용신·신살 AI 종합 분석",
     priceKrw: 990,
     priceLabel: "990원",
     planType: "one_time",
     interval: "none",
     availability: "active",
-    orderName: "운명랩 심층 분석",
+    orderName: "운명랩 AI 심층 분석",
   },
   premium_monthly: {
     id: "premium_monthly",

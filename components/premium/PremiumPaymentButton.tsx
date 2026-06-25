@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { loadTossPayments } from "@tosspayments/tosspayments-sdk";
+import { getPaymentFailUrl, getPaymentSuccessUrl } from "@/lib/payments/urls";
 import { getOrCreateCustomerKey } from "@/lib/premium/customer-key";
 import type { PremiumPlanId, PreparePaymentResponse } from "@/lib/premium/types";
 
@@ -64,8 +65,8 @@ export default function PremiumPaymentButton({
         },
         orderId: prepareData.orderId,
         orderName: prepareData.orderName,
-        successUrl: `${window.location.origin}/premium/success`,
-        failUrl: `${window.location.origin}/premium/fail`,
+        successUrl: getPaymentSuccessUrl(window.location.origin),
+        failUrl: getPaymentFailUrl(window.location.origin),
         customerName: "운명랩 회원",
       });
     } catch (err) {

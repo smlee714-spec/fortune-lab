@@ -1,17 +1,29 @@
 "use client";
 
 import Link from "next/link";
+import { useMemo } from "react";
 import { useSajuResult } from "@/hooks/useSajuResult";
+import { generateDailyFortune } from "@/lib/fortune";
+import { buildResultLuckMeta } from "@/lib/luck-meta";
+import { ANALYSIS_MENUS } from "@/lib/result-routes";
 import { formatBirthInfo } from "@/lib/saju";
 import ResultUpgradeCards from "@/components/premium/ResultUpgradeCards";
-import ResultAskAIPanel from "./ResultAskAIPanel";
 import MobileShell from "@/components/MobileShell";
+import AnalysisMenuCard from "./AnalysisMenuCard";
 import DestinyScoreGauge from "./DestinyScoreGauge";
+import FortuneEmojiCard from "./FortuneEmojiCard";
+import ResultAskAIPanel from "./ResultAskAIPanel";
 import ResultFeedback from "./ResultFeedback";
 import ResultLoading from "./ResultLoading";
-import ResultModePanel from "./ResultModePanel";
 import ShareButtons from "./ShareButtons";
 import TodayLuckPanel from "./TodayLuckPanel";
+
+const FREE_FORTUNE_CARDS = [
+  { key: "love" as const, emoji: "❤️", title: "연애운" },
+  { key: "wealth" as const, emoji: "💰", title: "재물운" },
+  { key: "career" as const, emoji: "💼", title: "직업운" },
+  { key: "health" as const, emoji: "🏥", title: "건강운" },
+];
 
 export default function ResultMainView() {
   const {
@@ -21,26 +33,29 @@ export default function ResultMainView() {
     questionAnswer,
     activeQuestion,
     result,
-    analysis,
     isReady,
     questionLoading,
     askQuestion,
   } = useSajuResult();
 
-  if (!isReady || !params || !result || !analysis) {
+  const sampleFortune = useMemo(
+    () => (result ? generateDailyFortune(result) : null),
+    [result]
+  );
+
+  const displayFortune = fortune ?? sampleFortune;
+
+  const displayLuckMeta = useMemo(() => {
+    if (!result || !displayFortune) return null;
+    if (luckMeta) return luckMeta;
+    return buildResultLuckMeta(result, displayFortune.today.detail);
+  }, [luckMeta, result, displayFortune]);
+
+  if (!isReady || !params || !result || !displayFortune || !displayLuckMeta) {
     return <ResultLoading />;
   }
 
-  const hasAiResult = Boolean(fortune && luckMeta);
-
-  const dateLabel =
-    fortune?.dateLabel ??
-    new Date().toLocaleDateString("ko-KR", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-      weekday: "long",
-    });
+  const dateLabel = displayFortune.dateLabel;
 
   return (
     <MobileShell>
@@ -56,6 +71,59 @@ export default function ResultMainView() {
           <p className="result-date-label">{dateLabel}</p>
         </header>
 
+        <section className="result-hero-panel" aria-labelledby="today-summary-title">
+          <DestinyScoreGauge
+            score={displayLuckMeta.destinyScore}
+            starCount={displayLuckMeta.starCount}
+          />
+
+          <div className="result-oneliner">
+            <p id="today-summary-title" className="section-title-sm">
+              오늘의 운세
+            </p>
+            <p className="result-oneliner-text">{displayLuckMeta.oneLiner}</p>
+            <p className="result-today-detail">{displayFortune.today.detail}</p>
+          </div>
+        </section>
+
+        <section className="result-free-section" aria-labelledby="free-fortune-title">
+          <h2 id="free-fortune-title" className="section-title-sm section-heading-row">
+            무료 운세
+          </h2>
+          <div className="fortune-emoji-grid">
+            {FREE_FORTUNE_CARDS.map(({ key, emoji, title }) => (
+              <FortuneEmojiCard
+                key={key}
+                emoji={emoji}
+                title={title}
+                content={displayFortune[key].detail}
+              />
+            ))}
+          </div>
+        </section>
+
+        <TodayLuckPanel luck={displayLuckMeta} />
+
+        <section className="result-analysis-section" aria-labelledby="analysis-menu-title">
+          <div className="section-heading-center">
+            <p className="lux-caption">DEEP DIVE</p>
+            <h2 id="analysis-menu-title" className="section-title-md mt-3">
+              상세 분석
+            </h2>
+            <p className="result-mode-desc">카드를 눌러 명리 분석 상세를 확인하세요.</p>
+          </div>
+
+          <div className="menu-grid">
+            {ANALYSIS_MENUS.map((item) => (
+              <AnalysisMenuCard key={item.section} item={item} params={params} />
+            ))}
+          </div>
+        </section>
+
+        <div className="lux-divider" />
+
+        <ResultUpgradeCards />
+
         <ResultAskAIPanel
           className="result-ask-ai"
           fortuneParams={params}
@@ -64,34 +132,6 @@ export default function ResultMainView() {
           initialAnswer={questionAnswer}
           initialQuestion={activeQuestion}
         />
-
-        {hasAiResult && (
-          <div className="result-ai-output animate-fade-in">
-            <section className="result-hero-panel">
-              <DestinyScoreGauge score={luckMeta!.destinyScore} starCount={luckMeta!.starCount} />
-
-              <div className="result-oneliner">
-                <p className="section-title-sm">오늘의 한줄</p>
-                <p className="result-oneliner-text">{luckMeta!.oneLiner}</p>
-              </div>
-            </section>
-
-            <TodayLuckPanel luck={luckMeta!} />
-
-            <ResultModePanel
-              params={params}
-              result={result}
-              analysis={analysis}
-              fortune={fortune}
-              luckMeta={luckMeta}
-              questionAnswer={questionAnswer}
-            />
-          </div>
-        )}
-
-        <div className="lux-divider" />
-
-        <ResultUpgradeCards />
 
         <div className="result-bottom-trust">
           <ResultFeedback />

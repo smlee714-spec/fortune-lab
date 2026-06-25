@@ -40,7 +40,7 @@ export default function PremiumFailView() {
           )}
           <div className="premium-fail-actions">
             <Link href="/premium" className="btn-primary block text-center">
-              Premium 다시 시도
+              다시 결제하기
             </Link>
             <Link href="/" className="lux-btn-ghost mt-4 block text-center">
               홈으로 돌아가기
